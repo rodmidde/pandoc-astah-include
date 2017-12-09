@@ -4,8 +4,9 @@ Include Macro to insert Astah Diagrams into a Markdown document using Pandoc.
 
 Example
 -------
-``` {.astah file="designs/Sample.asta" caption="This is the caption" index=1 format="png"}
-```
+
+    ``` {.astah file="designs/Sample.asta" caption="This is the caption" index=1 format="png"}
+    ```
 
 All parameters are required:
 * file:     name of the asta file name
