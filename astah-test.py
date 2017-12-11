@@ -19,7 +19,7 @@ class AstahTests(unittest.TestCase):
         para = astah('CodeBlock', value, "", [])
         self.assertEqual(para, Para([Image(["", [], [[u'file', u'designs/Sample.asta'],
                                                      [u'index', u'1'],
-                                                     [u'format', u'png']]], [{'c': 'this is the caption', 't': 'Str'}],
+                                                     [u'format', u'png']]], [{'c': u'this is the caption', 't': 'Str'}],
                                            ['astah-generated-files/Sample/DataFlow/00.Withdrawal '
                                             'service of saving account.png',
                                             'fig:'])]))
