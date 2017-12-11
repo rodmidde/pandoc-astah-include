@@ -7,4 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
+          pip install pandocfilters 
+      - run:
           python astah-test.py 
