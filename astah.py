@@ -7,13 +7,14 @@ Needs `astah-community.jar and dependencies`.
 """
 
 import os
-import sys
+import shutil
+
 from subprocess import call
 
-from pandocfilters import toJSONFilter, Para, Image, get_filename4code, get_caption, get_extension
+from pandocfilters import toJSONFilter, Para, Image, get_caption
+
 
 def get_filepaths_by_index(topdir, exten, idx):
-    files = []
     count = 0
     for dirpath, dirnames, files in os.walk(topdir):
         for name in files:
@@ -23,11 +24,12 @@ def get_filepaths_by_index(topdir, exten, idx):
                 else:
                     count += 1
 
-def clear_dir(dirPath, exten):
-    if (os.path.exists(dirPath)):
-        filelist = [ f for f in os.listdir(dirPath) if f.endswith(exten) ]
-        for f in filelist:
-            os.remove(os.path.join(mydir, f))
+
+def clear_dir(dirPath):
+    for root, dirs, files in os.walk(dirPath):
+        for d in dirs:
+            shutil.rmtree(os.path.join(root, d))
+
 
 def astah(key, value, format, _):
     if key == 'CodeBlock':
@@ -41,13 +43,16 @@ def astah(key, value, format, _):
                 if "format" in kv:
                     if "index" in kv:
                         output_dir = "astah-generated-files"
-                        clear_dir(output_dir, kv["format"])
+                        clear_dir(output_dir)
 
-                        call(["java", "-Djava.awt.headless=true", "-Dcheck_jvm_version=false", "-cp", "astah/astah-community.jar", "com.change_vision.jude.cmdline.JudeCommandRunner", "-image", "all", "-resized", "-f", kv["file"], "-t", kv["format"], "-o", output_dir])
+                        call(["java", "-Djava.awt.headless=true", "-Dcheck_jvm_version=false", "-cp",
+                              "astah/astah-community.jar", "com.change_vision.jude.cmdline.JudeCommandRunner", "-image",
+                              "all", "-resized", "-f", kv["file"], "-t", kv["format"], "-o", output_dir])
 
-                        dest = get_filepaths_by_index(output_dir,kv["format"],int(kv["index"]))
+                        dest = get_filepaths_by_index(output_dir, kv["format"], int(kv["index"]))
 
         return Para([Image([ident, [], keyvals], caption, [dest, typef])])
+
 
 if __name__ == "__main__":
     toJSONFilter(astah)
