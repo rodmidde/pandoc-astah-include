@@ -15,14 +15,15 @@ from pandocfilters import toJSONFilter, Para, Image, get_caption
 
 
 def get_filepaths_by_index(topdir, exten, idx):
-    count = 0
-    for dirpath, dirnames, files in os.walk(topdir):
-        for name in files:
-            if name.lower().endswith(exten):
-                if count == idx:
-                    return os.path.join(dirpath, name)
-                else:
-                    count += 1
+    filelist = []
+    for root, directories, filenames in os.walk(topdir):
+        for filename in filenames:
+            if filename.lower().endswith(exten):
+                fullname = os.path.join(root, filename)
+                filelist.append( fullname )
+    filelist.sort()
+
+    return filelist[idx]
 
 
 def clear_dir(dirPath):
