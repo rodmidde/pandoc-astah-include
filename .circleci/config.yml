@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: rodmidde/jenkins-slave-python
+    steps:
+      - checkout
+      - run:
+          python astah-test.py 
